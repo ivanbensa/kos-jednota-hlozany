@@ -1,0 +1,120 @@
+---
+
+import 'photoswipe/style.css';
+
+interface Props {
+    fullPage?: boolean;
+    }
+
+const { fullPage = false } = Astro.props;
+
+const photos = [
+{
+    src: '/images/about.png',
+    alt: 'Folklórne vystúpenie',
+    width: 1920,
+    height: 1080,
+    },
+{
+    src: '/images/about.png',
+    alt: 'Naše tradície',
+    width: 1536,
+    height: 1024,
+    },
+{
+    src: '/images/folklore-children.jpg',
+    alt: 'Detská folklórna skupina',
+    width: 640,
+    height: 1024,
+    },
+{
+    src: '/images/folklore-youth.jpg',
+    alt: 'Mládežnícka folklórna skupina',
+    width: 640,
+    height: 1024,
+    },
+{
+    src: '/images/folklore-adults.jpg',
+    alt: 'Folklórna skupina dospelých',
+    width: 640,
+    height: 1024,
+    },
+];
+---
+
+<section id="galeria" class="bg-cream py-24">
+    <div class="mx-auto max-w-7xl px-6">
+
+        <!-- Naslov -->
+        <div class="mb-12 text-center">
+            <p class="mb-4 text-sm font-semibold uppercase tracking-[0.25em] text-primary">
+                Naše spomienky
+            </p>
+
+            <h2 class="mb-5 text-4xl font-bold text-dark md:text-5xl">
+                Galéria
+            </h2>
+
+            <p class="mx-auto max-w-2xl text-lg text-gray-600">
+                Zachytené okamihy z našich vystúpení, skúšok a spoločných zážitkov.
+            </p>
+        </div>
+
+        <!-- Fotografije -->
+        <div
+                id="homepage-gallery"
+                class="grid grid-cols-2 gap-4 md:grid-cols-3"
+        >
+            {photos.map((photo, index) => (
+                    <a
+                            href={photo.src}
+                            data-pswp-width={photo.width}
+                            data-pswp-height={photo.height}
+                            target="_blank"
+                            rel="noopener"
+                            aria-label={`Otvoriť fotografiu: ${photo.alt}`}
+                            class:list={[
+                                'group relative block overflow-hidden rounded-xl',
+                                index === 0 ? 'col-span-2 row-span-2' : '',
+                            ]}
+                    >
+                        <img
+                                src={photo.src}
+                                alt={photo.alt}
+                                loading="lazy"
+                                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+
+                        <div
+                                class="pointer-events-none absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/20"
+                        ></div>
+                    </a>
+            ))}
+        </div>
+
+        <!-- Dugme samo na početnoj stranici -->
+        {!fullPage && (
+                <div class="mt-12 text-center">
+                    <a
+                            href="/galeria"
+                            class="inline-block rounded-md bg-primary px-8 py-4 font-semibold text-white transition hover:brightness-110"
+                    >
+                        Zobraziť celú galériu
+                    </a>
+                </div>
+        )}
+
+    </div>
+</section>
+
+<script>
+    import PhotoSwipeLightbox from 'photoswipe/lightbox';
+
+    const lightbox = new PhotoSwipeLightbox({
+        gallery: '#homepage-gallery',
+        children: 'a',
+        pswpModule: () => import('photoswipe'),
+    });
+
+    lightbox.init();
+</script>

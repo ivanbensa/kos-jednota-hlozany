@@ -1,0 +1,88 @@
+---
+import { events } from '../data/events';
+
+const upcomingEvents = events
+    .filter((event) => new Date(`${event.date}T23:59:59`) >= new Date())
+    .sort((a, b) => a.date.localeCompare(b.date))
+    .slice(0, 3);
+---
+
+<section id="podujatia" class="bg-white py-24">
+    <div class="mx-auto max-w-7xl px-6">
+
+        <div class="mb-14 text-center">
+            <p class="mb-4 text-sm font-semibold uppercase tracking-[0.25em] text-primary">
+                Stretnime sa
+            </p>
+
+            <h2 class="mb-5 text-4xl font-bold text-dark md:text-5xl">
+                Vystúpenia a podujatia
+            </h2>
+
+            <p class="mx-auto max-w-2xl text-lg text-gray-600">
+                Pozrite sa, kde nás môžete najbližšie vidieť.
+            </p>
+        </div>
+
+        <div class="space-y-5">
+            {upcomingEvents.length > 0 ? (
+                upcomingEvents.map((event) => {
+                    const date = new Date(`${event.date}T12:00:00Z`);
+
+                    return (
+                            <article class="group flex flex-col gap-6 rounded-xl border border-gray-100 bg-cream p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg md:flex-row md:items-center">
+
+                                <div class="flex h-24 w-24 shrink-0 flex-col items-center justify-center rounded-lg bg-primary text-white">
+                <span class="text-4xl font-bold">
+                  {date.getUTCDate()}
+                </span>
+                                    <span class="text-sm font-semibold uppercase">
+                  {new Intl.DateTimeFormat('sk-SK', {
+                      month: 'short',
+                      timeZone: 'UTC',
+                  }).format(date)}
+                </span>
+                                </div>
+
+                                <div class="flex-1">
+                                    <h3 class="mb-2 text-2xl font-bold text-dark">
+                                        {event.title}
+                                    </h3>
+
+                                    <p class="mb-2 text-gray-600">
+                                        {event.description}
+                                    </p>
+
+                                    <p class="text-sm font-medium text-primary">
+                                        📍 {event.location} · 🕒 {event.time}
+                                    </p>
+                                </div>
+
+                                <a
+                                        href="/podujatia"
+                                        class="inline-flex shrink-0 items-center justify-center rounded-md border-2 border-primary px-6 py-3 font-semibold text-primary transition hover:bg-primary hover:text-white"
+                                >
+                                    Viac informácií →
+                                </a>
+
+                            </article>
+                    );
+                })
+            ) : (
+                    <p class="rounded-xl bg-cream p-10 text-center text-gray-600">
+                        Momentálne nemáme naplánované žiadne podujatia.
+                    </p>
+            )}
+        </div>
+
+        <div class="mt-10 text-center">
+            <a
+                    href="/podujatia"
+                    class="inline-flex items-center gap-2 font-semibold text-primary hover:underline"
+            >
+                Všetky podujatia →
+            </a>
+        </div>
+
+    </div>
+</section>
