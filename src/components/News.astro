@@ -1,0 +1,72 @@
+---
+import { news } from '../data/news';
+
+const latestNews = [...news]
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .slice(0, 3);
+---
+
+<section id="novinky" class="bg-cream py-24">
+    <div class="mx-auto max-w-7xl px-6">
+
+        <div class="mb-12 flex flex-wrap items-end justify-between gap-6">
+            <div>
+                <p class="mb-4 text-sm font-semibold uppercase tracking-[0.25em] text-primary">
+                    Život nášho spolku
+                </p>
+
+                <h2 class="text-4xl font-bold text-dark md:text-5xl">
+                    Najnovšie správy
+                </h2>
+            </div>
+
+            <a href="/novinky" class="font-semibold text-primary hover:underline">
+                Všetky novinky →
+            </a>
+        </div>
+
+        <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {latestNews.map((item) => (
+                    <article class="group overflow-hidden rounded-xl bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+
+                        <div class="h-56 overflow-hidden bg-gray-200">
+                            <img
+                                    src={item.image}
+                                    alt={item.title}
+                                    loading="lazy"
+                                    class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            />
+                        </div>
+
+                        <div class="p-7">
+                            <time datetime={item.date} class="text-sm font-medium text-primary">
+                                {new Intl.DateTimeFormat('sk-SK', {
+                                    day: 'numeric',
+                                    month: 'long',
+                                    year: 'numeric',
+                                    timeZone: 'UTC',
+                                }).format(new Date(`${item.date}T12:00:00Z`))}
+                            </time>
+
+                            <h3 class="mt-3 mb-4 text-2xl font-bold text-dark">
+                                {item.title}
+                            </h3>
+
+                            <p class="mb-6 leading-7 text-gray-600">
+                                {item.description}
+                            </p>
+
+                            <a
+                                    href={`/novinky/${item.slug}`}
+                                    class="font-semibold text-primary hover:underline"
+                            >
+                                Čítať viac →
+                            </a>
+                        </div>
+
+                    </article>
+            ))}
+        </div>
+
+    </div>
+</section>
