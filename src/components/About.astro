@@ -1,3 +1,7 @@
+---
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+---
+
 <section id="o-nas" class="bg-cream py-24">
     <div class="mx-auto grid max-w-7xl items-center gap-14 px-6 lg:grid-cols-2">
 
@@ -34,7 +38,7 @@
         <!-- Fotografija -->
         <div class="relative">
             <img
-                    src="/images/about.png"
+                    src={`${base}images/about.png`}
                     alt="Slovenský folklór v Hložanoch"
                     loading="lazy"
                     class="h-[450px] w-full rounded-xl object-cover shadow-xl"

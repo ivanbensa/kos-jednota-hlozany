@@ -1,4 +1,5 @@
 ---
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
 import 'photoswipe/style.css';
 
@@ -9,35 +10,35 @@ interface Props {
 const { fullPage = false } = Astro.props;
 
 const photos = [
-{
-    src: '/images/about.png',
-    alt: 'Folklórne vystúpenie',
-    width: 1920,
-    height: 1080,
+    {
+        src: `${base}images/Golden-Hour-Folk-Dance-Festival.png`,
+        alt: 'Folklórne vystúpenie',
+        width: 1920,
+        height: 1080,
     },
-{
-    src: '/images/about.png',
-    alt: 'Naše tradície',
-    width: 1536,
-    height: 1024,
+    {
+        src: `${base}images/about.png`,
+        alt: 'Naše tradície',
+        width: 1536,
+        height: 1024,
     },
-{
-    src: '/images/folklore-children.jpg',
-    alt: 'Detská folklórna skupina',
-    width: 640,
-    height: 1024,
+    {
+        src: `${base}images/folklore-children.jpg`,
+        alt: 'Detská folklórna skupina',
+        width: 640,
+        height: 1024,
     },
-{
-    src: '/images/folklore-youth.jpg',
-    alt: 'Mládežnícka folklórna skupina',
-    width: 640,
-    height: 1024,
+    {
+        src: `${base}images/folklore-youth.jpg`,
+        alt: 'Mládežnícka folklórna skupina',
+        width: 640,
+        height: 1024,
     },
-{
-    src: '/images/folklore-adults.jpg',
-    alt: 'Folklórna skupina dospelých',
-    width: 640,
-    height: 1024,
+    {
+        src: `${base}images/folklore-adults.jpg`,
+        alt: 'Folklórna skupina dospelých',
+        width: 640,
+        height: 1024,
     },
 ];
 ---
