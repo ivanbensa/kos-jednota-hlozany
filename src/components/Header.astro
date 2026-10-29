@@ -1,13 +1,14 @@
+
 ---
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 ---
 
-<header class="bg-primary border-b border-white/20">
+<header class="border-b border-white/20 bg-primary">
     <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
 
-        <a href="/" aria-label="KOS Jednota Hložany - Domov">
+        <a href={base} aria-label="KOS Jednota Hložany - Domov">
             <img
-                    src={`${base}images/kos-jednota-logo.png`}
+                    src={`${base}images/logo-blanc.png`}
                     alt="KOS Jednota Hložany"
                     class="h-16 w-auto object-contain"
                     width="64"
@@ -16,18 +17,56 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
         </a>
 
         <div class="flex items-center gap-6 text-white">
-            <a href="/" class="hover:text-cream">Domov</a>
-            <a href="/o-nas" class="hover:text-cream">O nás</a>
-            <a href="/historia" class="hover:text-cream">História</a>
-            <a href="/galeria" class="hover:text-cream">Galéria</a>
-            <a href="/kontakt" class="hover:text-cream">Kontakt</a>
+            <a href={base} class="hover:text-cream">Domov</a>
+            <a href={`${base}o-nas`} class="hover:text-cream">O nás</a>
+            <a href={`${base}historia`} class="hover:text-cream">História</a>
+            <a href={`${base}galeria`} class="hover:text-cream">Galéria</a>
+            <a href={`${base}kontakt`} class="hover:text-cream">Kontakt</a>
         </div>
 
-        <div class="flex items-center gap-2 text-white">
-            <span class="font-bold hover:text-cream">SK</span>
-            <span>|</span>
-            <span>ЋИР</span>
+        <div class="flex items-end gap-0">
+
+            <!-- Slovački grb -->
+            <button
+                    type="button"
+                    aria-label="Slovenčina"
+                    class="group relative z-0 cursor-pointer transition-transform duration-200 hover:z-10 hover:scale-110"
+            >
+                <img
+                        src={`${base}images/Slovakia_coat_of_arms_left_half.svg`}
+                        alt=""
+                        class="h-15 w-auto"
+                />
+
+                <span
+                        class="pointer-events-none absolute bottom-full left-1/2 mb-3 -translate-x-1/2 rounded-md bg-dark px-3 py-1.5 text-xs font-semibold whitespace-nowrap text-white opacity-0 shadow-lg transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100"
+                >
+                    Slovenčina
+                </span>
+            </button>
+
+            <!-- Srpski grb -->
+            <button
+                    type="button"
+                    aria-label="Српски"
+                    class="group relative z-0 cursor-pointer transition-transform duration-200 hover:z-10 hover:scale-110"
+            >
+                <img
+                        src={`${base}images/Serbia_coat_of_arms_right_half.svg`}
+                        alt=""
+                        class="h-22 w-auto"
+                />
+
+                <span
+                        class="pointer-events-none absolute bottom-[65%] left-1/2 -translate-x-1/2 rounded-md bg-dark px-3 py-1.5 text-xs font-semibold whitespace-nowrap text-white opacity-0 shadow-lg transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100"
+                >
+    Српски
+                </span>
+            </button>
+
         </div>
 
     </nav>
 </header>
+
+

@@ -2,7 +2,7 @@
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 ---
 
-<section class="relative flex min-h-[650px] items-center justify-center overflow-hidden bg-slate-900 text-white">
+<section class="relative flex min-h-[calc(100vh-80px)] items-center justify-center overflow-hidden bg-slate-900 text-white">
 
     <img
             src={`${base}images/Golden-Hour-Folk-Dance-Festival.png`}
@@ -13,7 +13,7 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
     <div class="absolute inset-0 bg-black/55"></div>
 
     <div class="relative z-10 mx-auto max-w-5xl px-6 text-center">
-        <p class="mb-5 text-sm font-semibold uppercase tracking-[0.3em] text-red-300">
+        <p class="mb-5 text-sm font-semibold uppercase tracking-[0.3em] text-sky-300">
             Slovenská kultúra a tradície
         </p>
 
@@ -27,7 +27,7 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
         <a
                 href={`${base}o-nas`}
-                class="inline-block rounded-md bg-secondary px-8 py-4 font-semibold text-white transition hover:brightness-110"
+                class="inline-block rounded-md bg-primary px-8 py-4 font-semibold text-white transition-all duration-300 hover:bg-[#15618A] hover:scale-105"
         >
             Spoznajte nás
         </a>
