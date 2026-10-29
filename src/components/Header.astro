@@ -1,72 +1,146 @@
 
 ---
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+
+const links = [
+    { label: 'Domov', href: base },
+    { label: 'O nás', href: `${base}o-nas` },
+    { label: 'História', href: `${base}historia` },
+    { label: 'Galéria', href: `${base}galeria` },
+    { label: 'Kontakt', href: `${base}kontakt` },
+];
 ---
 
-<header class="border-b border-white/20 bg-primary">
-    <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
+<header class="relative z-50 border-b border-white/20 bg-primary">
+    <nav class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4">
 
-        <a href={base} aria-label="KOS Jednota Hložany - Domov">
+        <!-- Logo -->
+        <a href={base} aria-label="KOS Jednota Hložany - Domov" class="shrink-0">
             <img
                     src={`${base}images/logo-blanc.png`}
                     alt="KOS Jednota Hložany"
-                    class="h-16 w-auto object-contain"
+                    class="h-14 w-auto object-contain lg:h-16"
                     width="64"
                     height="64"
             />
         </a>
 
-        <div class="flex items-center gap-6 text-white">
-            <a href={base} class="hover:text-cream">Domov</a>
-            <a href={`${base}o-nas`} class="hover:text-cream">O nás</a>
-            <a href={`${base}historia`} class="hover:text-cream">História</a>
-            <a href={`${base}galeria`} class="hover:text-cream">Galéria</a>
-            <a href={`${base}kontakt`} class="hover:text-cream">Kontakt</a>
+        <!-- Desktop navigacija -->
+        <div class="hidden items-center gap-6 text-white lg:flex">
+            {links.map((link) => (
+                    <a href={link.href} class="transition-colors hover:text-cream">
+                        {link.label}
+                    </a>
+            ))}
         </div>
 
-        <div class="flex items-end gap-0">
-
-            <!-- Slovački grb -->
+        <!-- Desktop grbovi -->
+        <div class="hidden items-end gap-0 lg:flex">
             <button
                     type="button"
                     aria-label="Slovenčina"
-                    class="group relative z-0 cursor-pointer transition-transform duration-200 hover:z-10 hover:scale-110"
+                    title="Slovenčina"
+                    class="cursor-pointer transition-transform duration-200 hover:scale-110"
             >
                 <img
                         src={`${base}images/Slovakia_coat_of_arms_left_half.svg`}
                         alt=""
                         class="h-15 w-auto"
                 />
-
-                <span
-                        class="pointer-events-none absolute bottom-full left-1/2 mb-3 -translate-x-1/2 rounded-md bg-dark px-3 py-1.5 text-xs font-semibold whitespace-nowrap text-white opacity-0 shadow-lg transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100"
-                >
-                    Slovenčina
-                </span>
             </button>
 
-            <!-- Srpski grb -->
             <button
                     type="button"
                     aria-label="Српски"
-                    class="group relative z-0 cursor-pointer transition-transform duration-200 hover:z-10 hover:scale-110"
+                    title="Српски"
+                    class="cursor-pointer transition-transform duration-200 hover:scale-110"
             >
                 <img
                         src={`${base}images/Serbia_coat_of_arms_right_half.svg`}
                         alt=""
                         class="h-22 w-auto"
                 />
-
-                <span
-                        class="pointer-events-none absolute bottom-[65%] left-1/2 -translate-x-1/2 rounded-md bg-dark px-3 py-1.5 text-xs font-semibold whitespace-nowrap text-white opacity-0 shadow-lg transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100"
-                >
-    Српски
-                </span>
             </button>
-
         </div>
+
+        <!-- Mobilni / tablet meni -->
+        <details class="group relative lg:hidden">
+            <summary
+                    class="flex h-11 w-11 cursor-pointer list-none items-center justify-center rounded-md text-white hover:bg-white/10 [&::-webkit-details-marker]:hidden"
+                    aria-label="Otvori navigaciju"
+            >
+                <!-- Hamburger -->
+                <svg
+                        class="h-7 w-7 group-open:hidden"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                >
+                    <path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+
+                <!-- X kada je otvoreno -->
+                <svg
+                        class="hidden h-7 w-7 group-open:block"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                >
+                    <path stroke-linecap="round" d="M6 6l12 12M18 6L6 18" />
+                </svg>
+            </summary>
+
+            <div
+                    class="absolute right-0 top-full z-50 mt-4 w-64 rounded-xl border border-white/20 bg-primary p-5 shadow-xl"
+            >
+                <div class="flex flex-col gap-4 text-white">
+                    {links.map((link) => (
+                            <a
+                                    href={link.href}
+                                    class="border-b border-white/10 pb-3 transition-colors hover:text-cream"
+                            >
+                                {link.label}
+                            </a>
+                    ))}
+                </div>
+
+                <!-- Grbovi u mobilnom meniju -->
+                <div class="mt-5 flex items-end justify-center gap-0">
+                    <button
+                            type="button"
+                            aria-label="Slovenčina"
+                            title="Slovenčina"
+                            class="cursor-pointer transition-transform duration-200 hover:scale-110"
+                    >
+                        <img
+                                src={`${base}images/Slovakia_coat_of_arms_left_half.svg`}
+                                alt=""
+                                class="h-12 w-auto"
+                        />
+                    </button>
+
+                    <button
+                            type="button"
+                            aria-label="Српски"
+                            title="Српски"
+                            class="cursor-pointer transition-transform duration-200 hover:scale-110"
+                    >
+                        <img
+                                src={`${base}images/Serbia_coat_of_arms_right_half.svg`}
+                                alt=""
+                                class="h-[70px] w-auto"
+                        />
+                    </button>
+                </div>
+            </div>
+        </details>
 
     </nav>
 </header>
+
 
 
