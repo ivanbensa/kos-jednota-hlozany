@@ -1,0 +1,121 @@
+
+
+---
+import Layout from '../../layouts/Layout.astro';
+import { news } from '../../data/news';
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+
+export function getStaticPaths() {
+    return news.map((item) => ({
+        params: { slug: item.slug },
+        props: { item },
+    }));
+}
+
+const { item } = Astro.props;
+
+const formattedDate = new Intl.DateTimeFormat('sk-SK', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC',
+}).format(new Date(`${item.date}T12:00:00Z`));
+---
+
+<Layout>
+    <main class="min-h-screen bg-sky-50 py-10 sm:py-14 md:py-20 lg:py-24">
+        <article class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+
+            <!-- Povratak na novosti -->
+            <a
+                    href={`${base}#novinky`}
+                    class="mb-8 inline-flex items-center gap-2
+                       text-sm font-semibold text-primary
+                       transition-colors hover:text-dark
+                       sm:mb-10 sm:text-base"
+            >
+                <span aria-hidden="true">←</span>
+                Späť na novinky
+            </a>
+
+            <!-- Datum -->
+            <time
+                    datetime={item.date}
+                    class="mb-3 block text-xs font-bold uppercase
+                       tracking-[0.15em] text-primary
+                       sm:mb-4 sm:text-sm"
+            >
+                {formattedDate}
+            </time>
+
+            <!-- Naslov -->
+            <h1
+                    class="mb-7 text-3xl leading-tight font-bold
+                       tracking-tight text-dark
+                       sm:mb-9 sm:text-4xl
+                       lg:mb-10 lg:text-5xl"
+            >
+                {item.title}
+            </h1>
+
+            <!-- Glavna fotografija -->
+            <div
+                    class="mb-8 overflow-hidden rounded-xl bg-sky-100
+                       shadow-md sm:mb-10 sm:rounded-2xl
+                       lg:mb-12"
+            >
+                <img
+                        src={`${base}${item.image.replace(/^\/+/, '')}`}
+                        alt={item.title}
+                        class="aspect-[4/3] w-full object-cover
+                           sm:aspect-[16/10]
+                           lg:aspect-[16/9]"
+                />
+            </div>
+
+            <!-- Sadržaj članka -->
+            <div class="py-4 sm:py-6">
+                <!-- Kratak uvod -->
+                <p
+                        class="mb-7 text-lg leading-8 font-medium
+                           text-slate-700
+                           sm:mb-9 sm:text-xl sm:leading-9"
+                >
+                    {item.description}
+                </p>
+
+                <!-- Kompletan članak -->
+                <div class="space-y-5 sm:space-y-6">
+                    {item.content.map((paragraph: string) => (
+                            <p
+                                    class="text-base leading-8 text-slate-600
+                                   sm:text-lg sm:leading-9"
+                            >
+                                {paragraph}
+                            </p>
+                    ))}
+                </div>
+            </div>
+
+            <!-- Donja navigacija -->
+            <div
+                    class="mt-10 border-t border-sky-200 pt-7
+                       sm:mt-14 sm:pt-8"
+            >
+                <a
+                        href={`${base}#novinky`}
+                        class="inline-flex items-center gap-2
+                           text-sm font-semibold text-primary
+                           transition-colors hover:text-dark
+                           sm:text-base"
+                >
+                    <span aria-hidden="true">←</span>
+                    Späť na novinky
+                </a>
+            </div>
+
+        </article>
+    </main>
+</Layout>
+

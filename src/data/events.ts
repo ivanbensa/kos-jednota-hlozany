@@ -6,6 +6,7 @@ export const events = [
         time: "19:00",
         location: "Hložany",
         description: "Večer plný slovenských ľudových tancov a hudby.",
+
     },
     {
         id: 2,
@@ -14,6 +15,7 @@ export const events = [
         time: "18:00",
         location: "Báčsky Petrovec",
         description: "Spoločné vystúpenie folklórnych súborov.",
+
     },
     {
         id: 3,
@@ -22,5 +24,6 @@ export const events = [
         time: "17:00",
         location: "Hložany",
         description: "Tradičné stretnutie členov a priateľov folklóru.",
+
     },
 ];
