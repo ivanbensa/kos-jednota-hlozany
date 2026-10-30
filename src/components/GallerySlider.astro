@@ -1,0 +1,157 @@
+
+---
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+
+const photos = [
+    {
+        src: `${base}images/Golden-Hour-Folk-Dance-Festival.png`,
+        alt: 'Folklórne vystúpenie',
+    },
+    {
+        src: `${base}images/about.png`,
+        alt: 'Naše tradície',
+    },
+    {
+        src: `${base}images/folklore-children.jpg`,
+        alt: 'Detská folklórna skupina',
+    },
+    {
+        src: `${base}images/folklore-youth.jpg`,
+        alt: 'Mládežnícka folklórna skupina',
+    },
+    {
+        src: `${base}images/folklore-adults.jpg`,
+        alt: 'Folklórna skupina dospelých',
+    },
+];
+---
+
+<section
+        id="gallery-slider"
+        aria-label="Fotografie z nášho spolku"
+        class="w-full overflow-hidden"
+>
+
+
+    <div class="gallery-track">
+
+        <!-- Prva grupa -->
+        <div class="gallery-group">
+            {[...photos, ...photos].map((photo) => (
+                    <div class="gallery-photo">
+                        <img
+                                src={photo.src}
+                                alt={photo.alt}
+                                loading="eager"
+                        />
+                    </div>
+            ))}
+        </div>
+
+        <!-- Druga identična grupa -->
+        <div class="gallery-group" aria-hidden="true">
+            {[...photos, ...photos].map((photo) => (
+                    <div class="gallery-photo">
+                        <img
+                                src={photo.src}
+                                alt=""
+                                loading="eager"
+                        />
+                    </div>
+            ))}
+        </div>
+
+    </div>
+
+
+</section>
+
+
+<style>
+    /* Beskonačna traka fotografija */
+    .gallery-track {
+        display: flex;
+        width: max-content;
+        animation: gallery-flow 45s linear infinite;
+        will-change: transform;
+    }
+
+    /* Dve identične grupe fotografija */
+    .gallery-group {
+        display: flex;
+        flex: 0 0 auto;
+        gap: 0;
+    }
+
+    /* Pojedinačna fotografija */
+    .gallery-photo {
+        display: block;
+        flex: 0 0 auto;
+        width: 320px;
+        height: 230px;
+        overflow: hidden;
+    }
+
+    .gallery-photo img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    /* Blago uvećanje fotografije */
+    .gallery-photo:hover img {
+        transform: scale(1.05);
+    }
+
+    /* Pauziranje kada miš stoji iznad trake */
+    .gallery-track:hover {
+        animation-play-state: paused;
+    }
+
+    /* Neprekidno pomeranje */
+    @keyframes gallery-flow {
+        from {
+            transform: translateX(0);
+        }
+
+        to {
+            transform: translateX(-50%);
+        }
+    }
+
+    /* Tablet */
+    @media (min-width: 640px) and (max-width: 1023px) {
+        .gallery-photo {
+            width: 260px;
+            height: 190px;
+        }
+
+        .gallery-track {
+            animation-duration: 40s;
+        }
+    }
+
+    /* Telefon */
+    @media (max-width: 639px) {
+        .gallery-photo {
+            width: 200px;
+            height: 150px;
+        }
+
+        .gallery-track {
+            animation-duration: 35s;
+        }
+    }
+
+    /* Pristupačnost */
+    @media (prefers-reduced-motion: reduce) {
+        .gallery-track {
+            animation: none;
+            will-change: auto;
+        }
+    }
+</style>
+
+
