@@ -132,17 +132,17 @@ const links = [
                 </div>
 
                 <!-- Grbovi u mobilnom meniju -->
-                <div class="mt-5 flex items-end justify-center gap-0">
+                <div class="mt-5 flex items-end justify-center gap-0 border-t border-white/20 pt-5">
                     <a
                             href={skUrl}
                             aria-label="Slovenčina"
                             title="Slovenčina"
-                            class="cursor-pointer transition-transform duration-200 hover:scale-110"
+                            class="flex items-center justify-end transition-transform duration-200 active:scale-95"
                     >
                         <img
                                 src={`${base}images/Slovakia_coat_of_arms_left_half.svg`}
-                                alt=""
-                                class="h-12 w-auto"
+                                alt="Slovenčina"
+                                class="pointer-events-none h-10 w-auto"
                         />
                     </a>
 
@@ -150,12 +150,12 @@ const links = [
                             href={srUrl}
                             aria-label="Српски"
                             title="Српски"
-                            class="cursor-pointer transition-transform duration-200 hover:scale-110"
+                            class="flex items-center justify-start transition-transform duration-200 active:scale-95"
                     >
                         <img
                                 src={`${base}images/Serbia_coat_of_arms_right_half.svg`}
-                                alt=""
-                                class="h-[70px] w-auto"
+                                alt="Српски"
+                                class="pointer-events-none h-14 w-auto"
                         />
                     </a>
                 </div>
