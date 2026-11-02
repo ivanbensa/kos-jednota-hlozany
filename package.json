@@ -12,8 +12,12 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@iconify-json/simple-icons": "^1.2.101",
+    "@icons-pack/react-simple-icons": "^13.15.1",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.4.2",
+    "astro-icon": "^1.2.0",
+    "lucide-astro": "^0.556.0",
     "photoswipe": "^5.4.4",
     "swiper": "^14.4.0",
     "tailwindcss": "^4.3.3"

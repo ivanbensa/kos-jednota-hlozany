@@ -1,8 +1,27 @@
+
+---
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+import { Icon } from 'astro-icon/components';
+
+
+const facebookUrl = 'https://www.facebook.com/kosjednota.hlozany';
+const instagramUrl = 'https://www.instagram.com/kosjednota.hlozany/';
+
+const links = [
+    { label: 'Domov', href: base },
+    { label: 'O nás', href: `${base}o-nas` },
+    { label: 'História', href: `${base}historia` },
+    { label: 'Galéria', href: `${base}galeria` },
+    { label: 'Kontakt', href: `${base}kontakt` },
+];
+---
+
 <footer class="bg-dark py-12 text-white">
     <div class="mx-auto max-w-7xl px-6">
 
         <div class="grid gap-10 md:grid-cols-3">
 
+            <!-- About -->
             <div>
                 <h3 class="mb-4 text-xl font-bold">
                     KOS Jednota Hložany
@@ -14,29 +33,75 @@
                 </p>
             </div>
 
+            <!-- Navigation -->
             <div>
-                <h3 class="mb-4 font-semibold">Navigácia</h3>
+                <h3 class="mb-4 font-semibold">
+                    Navigácia
+                </h3>
 
-                <nav class="flex flex-col gap-3 text-sm text-white/70">
-                    <a href="/" class="hover:text-white">Domov</a>
-                    <a href="/o-nas" class="hover:text-white">O nás</a>
-                    <a href="/historia" class="hover:text-white">História</a>
-                    <a href="/galeria" class="hover:text-white">Galéria</a>
-                    <a href="/kontakt" class="hover:text-white">Kontakt</a>
+                <nav
+                        aria-label="Navigácia v pätičke"
+                        class="flex flex-col gap-3 text-sm text-white/70"
+                >
+                    {links.map((link) => (
+                            <a
+                                    href={link.href}
+                                    class="w-fit transition-colors hover:text-white"
+                            >
+                                {link.label}
+                            </a>
+                    ))}
                 </nav>
             </div>
 
+            <!-- Social -->
             <div>
-                <h3 class="mb-4 font-semibold">Sledujte nás</h3>
+                <h3 class="mb-4 font-semibold">
+                    Sledujte nás
+                </h3>
 
-                <p class="text-sm text-white/70">
-                    Naše sociálne siete čoskoro doplníme.
-                </p>
+                <div class="flex flex-col items-start gap-4">
+
+                    <!-- Facebook -->
+                    <a
+                            href={facebookUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Facebook KOS Jednota Hložany"
+                            class="inline-flex items-center gap-3
+                               text-sm text-white/70
+                               transition-colors hover:text-white"
+                    >
+                        <Icon name="simple-icons:facebook" class="h-7 w-7" />
+
+                        <span>Facebook</span>
+                    </a>
+
+                    <!-- Instagram -->
+                    <a
+                            href={instagramUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Instagram KOS Jednota Hložany"
+                            class="inline-flex items-center gap-3
+                               text-sm text-white/70
+                               transition-colors hover:text-white"
+                    >
+                        <Icon name="simple-icons:instagram" class="h-7 w-7" />
+
+                        <span>Instagram</span>
+                    </a>
+
+                </div>
             </div>
 
         </div>
 
-        <div class="mt-12 border-t border-white/15 pt-6 text-center text-sm text-white/60">
+        <!-- Copyright -->
+        <div
+                class="mt-12 border-t border-white/15
+                   pt-6 text-center text-sm text-white/60"
+        >
             © {new Date().getFullYear()} KOS Jednota Hložany.
             Všetky práva vyhradené.
         </div>
