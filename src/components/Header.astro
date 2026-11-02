@@ -1,13 +1,34 @@
 
 ---
+import { getTranslations } from '../i18n';
+import type { Language } from '../i18n';
+
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
+// Prepoznaj jezik na osnovu URL-a
+const lang: Language = Astro.currentLocale === 'sr' ? 'sr' : 'sk';
+const t = getTranslations(lang);
+
+// Trenutna putanja bez GitHub Pages base prefiksa
+const pathname = Astro.url.pathname;
+const relativePath = pathname.startsWith(base)
+    ? pathname.slice(base.length)
+    : pathname.replace(/^\/+/, '');
+
+const pagePath = relativePath.replace(/^sr\/?/, '');
+
+// Linkovi ka istoj stranici na oba jezika
+const skUrl = `${base}${pagePath}`;
+const srUrl = `${base}sr/${pagePath}`;
+
+const prefix = lang === 'sr' ? `${base}sr/` : base;
+
 const links = [
-    { label: 'Domov', href: base },
-    { label: 'O nás', href: `${base}o-nas` },
-    { label: 'História', href: `${base}historia` },
-    { label: 'Galéria', href: `${base}galeria` },
-    { label: 'Kontakt', href: `${base}kontakt` },
+    { label: t.nav.home, href: prefix },
+    { label: t.nav.about, href: `${prefix}o-nas` },
+    { label: t.nav.history, href: `${prefix}historia` },
+    { label: t.nav.gallery, href: `${prefix}galeria` },
+    { label: t.nav.contact, href: `${prefix}kontakt` },
 ];
 ---
 
@@ -15,7 +36,7 @@ const links = [
     <nav class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4">
 
         <!-- Logo -->
-        <a href={base} aria-label="KOS Jednota Hložany - Domov" class="shrink-0">
+        <a href={prefix} aria-label="KOS Jednota Hložany" class="shrink-0">
             <img
                     src={`${base}images/logo-blanc.png`}
                     alt="KOS Jednota Hložany"
@@ -36,10 +57,11 @@ const links = [
 
         <!-- Desktop grbovi -->
         <div class="hidden items-end gap-0 lg:flex">
-            <button
-                    type="button"
+            <a
+                    href={skUrl}
                     aria-label="Slovenčina"
                     title="Slovenčina"
+                    aria-current={lang === 'sk' ? 'page' : undefined}
                     class="cursor-pointer transition-transform duration-200 hover:scale-110"
             >
                 <img
@@ -47,12 +69,13 @@ const links = [
                         alt=""
                         class="h-15 w-auto"
                 />
-            </button>
+            </a>
 
-            <button
-                    type="button"
+            <a
+                    href={srUrl}
                     aria-label="Српски"
                     title="Српски"
+                    aria-current={lang === 'sr' ? 'page' : undefined}
                     class="cursor-pointer transition-transform duration-200 hover:scale-110"
             >
                 <img
@@ -60,14 +83,14 @@ const links = [
                         alt=""
                         class="h-22 w-auto"
                 />
-            </button>
+            </a>
         </div>
 
         <!-- Mobilni / tablet meni -->
         <details class="group relative lg:hidden">
             <summary
                     class="flex h-11 w-11 cursor-pointer list-none items-center justify-center rounded-md text-white hover:bg-white/10 [&::-webkit-details-marker]:hidden"
-                    aria-label="Otvori navigaciju"
+                    aria-label={lang === 'sk' ? 'Otvoriť navigáciu' : 'Отвори навигацију'}
             >
                 <!-- Hamburger -->
                 <svg
@@ -110,8 +133,8 @@ const links = [
 
                 <!-- Grbovi u mobilnom meniju -->
                 <div class="mt-5 flex items-end justify-center gap-0">
-                    <button
-                            type="button"
+                    <a
+                            href={skUrl}
                             aria-label="Slovenčina"
                             title="Slovenčina"
                             class="cursor-pointer transition-transform duration-200 hover:scale-110"
@@ -121,10 +144,10 @@ const links = [
                                 alt=""
                                 class="h-12 w-auto"
                         />
-                    </button>
+                    </a>
 
-                    <button
-                            type="button"
+                    <a
+                            href={srUrl}
                             aria-label="Српски"
                             title="Српски"
                             class="cursor-pointer transition-transform duration-200 hover:scale-110"
@@ -134,13 +157,10 @@ const links = [
                                 alt=""
                                 class="h-[70px] w-auto"
                         />
-                    </button>
+                    </a>
                 </div>
             </div>
         </details>
 
     </nav>
 </header>
-
-
-
