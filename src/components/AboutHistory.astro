@@ -1,29 +1,274 @@
-
 ---
 import { about } from '../data/about';
+import { getTranslations, type Language } from '../i18n';
+import floralSvg from '../assets/about/folk-floral.svg?raw';
+import borderSvg from '../assets/about/folk-border.svg?raw';
 
-const lang = Astro.currentLocale === 'sr' ? 'sr' : 'sk';
+const lang: Language = Astro.currentLocale === 'sr' ? 'sr' : 'sk';
 const content = about[lang];
+const t = getTranslations(lang);
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const image = (name: string) => `${base}images/about/${name}`;
+const ornament = (svg: string, id: string) => svg.replaceAll('folk-', `${id}-folk-`);
+
+const labels = {
+  sk: {
+    identity: 'KOS JEDNOTA · HLOŽANY',
+    roots: 'Naše korene',
+    sections: 'Naše sekcie',
+    activities: 'TANEC · SPEV · HUDBA · DIVADLO',
+    tradition: 'Tradícia v piesni a tanci',
+    stage: 'NA JAVISKU DOMA I VO SVETE',
+    recognition: 'Vystúpenia a uznania',
+    direction: 'Umelecká práca',
+    travel: 'Hosťovania',
+    awards: 'Ocenenia',
+    festivalLabel: 'FOLKLÓRNY FESTIVAL',
+    festivalFirst: 'Tancuj,',
+    festivalLast: 'tancuj…',
+    festivalCaption: 'Tancuj, tancuj…',
+    place: 'Hložany',
+    festivalAlt: 'Deti a dospelí v krojoch na javisku festivalu Tancuj, tancuj… v Hložanoch.',
+    groupCaption: 'Folklórny súbor KOS Jednota',
+    groupAlt: 'Skupinová fotografia tanečníkov, spevákov a hudobníkov súboru Jednota v tradičných krojoch.',
+    costumeCaption: 'Detail hložianskeho kroja',
+    costumeAlt: 'Detail ženského hložianskeho kroja s modrou zásterou, bielou výšivkou a čipkou.',
+    membersStart: 'V spolku je činné',
+    awardNames: ['Cenu Obce Báčsky Petrovec', 'Iskru kultúry', 'Rad bratstva a jednoty so strieborným vencom', 'Chartou Zväzu ochotníkov Srbska', 'Zlatou plaketou'],
+  },
+  sr: {
+    identity: 'КОС ЈЕДНОТА · ГЛОЖАН',
+    roots: 'Наши корени',
+    sections: 'Наше секције',
+    activities: 'ИГРА · ПЕСМА · МУЗИКА · ПОЗОРИШТЕ',
+    tradition: 'Традиција у песми и игри',
+    stage: 'НА СЦЕНИ КОД КУЋЕ И У СВЕТУ',
+    recognition: 'Наступи и признања',
+    direction: 'Уметнички рад',
+    travel: 'Гостовања',
+    awards: 'Признања',
+    festivalLabel: 'ФОЛКЛОРНИ ФЕСТИВАЛ',
+    festivalFirst: 'Танцуј,',
+    festivalLast: 'танцуј…',
+    festivalCaption: 'Танцуј, танцуј…',
+    place: 'Гложан',
+    festivalAlt: 'Деца и одрасли у народним ношњама на сцени фестивала „Танцуј, танцуј…“ у Гложану.',
+    groupCaption: 'Фолклорни ансамбл КОС Једнота',
+    groupAlt: 'Групна фотографија играча, певача и музичара ансамбла Једнота у традиционалним ношњама.',
+    costumeCaption: 'Детаљ гложанске народне ношње',
+    costumeAlt: 'Детаљ женске гложанске ношње са плавом кецељом, белим везом и чипком.',
+    membersStart: 'У друштву је активно',
+    awardNames: ['Награду Општине Бачки Петровац', 'Искру културе', 'Орденом братства и јединства са сребрним венцем', 'Повељу Савеза аматера Србије', 'Златну плакету'],
+  },
+}[lang];
+
+// Slice only the source paragraph. Keep a complete-paragraph fallback if it changes.
+const sections = content.paragraphs[1];
+const listStart = sections.lastIndexOf(':') + 1;
+const membersStart = sections.indexOf(labels.membersStart);
+const canSplit = listStart > 0 && membersStart > listStart;
+const sectionsIntro = canSplit ? sections.slice(0, listStart).trim() : sections;
+const groups = canSplit
+  ? sections.slice(listStart, membersStart).trim().split(/(?<=,)\s+/u)
+  : [];
+const members = canSplit ? sections.slice(membersStart).trim() : '';
+const awardNames = new Set(labels.awardNames);
+const awardParts = content.paragraphs[4].split(
+  new RegExp(`(${labels.awardNames.join('|')})`, 'u'),
+);
 ---
 
-<section class="bg-cream py-16 md:py-24">
-    <div class="mx-auto max-w-4xl px-6">
-
-        <p class="mb-4 text-sm font-semibold uppercase tracking-[0.25em] text-primary">
-            KOS Jednota
-        </p>
-
-        <h1 class="mb-10 text-3xl font-bold leading-tight text-dark md:text-5xl">
-            {content.title}
-        </h1>
-
-        <div class="space-y-7">
-            {content.paragraphs.map((paragraph) => (
-                    <p class="text-base leading-8 text-gray-700 md:text-lg md:leading-9">
-                        {paragraph}
-                    </p>
-            ))}
+<article class="about-page bg-white text-slate-700" lang={lang} aria-labelledby="about-title">
+  <div class="bg-[#EAF4F9]">
+    <section class="about-shell about-hero" aria-labelledby="about-title">
+      <div class="about-intro">
+        <p class="about-eyebrow">{labels.identity}</p>
+        <h1 id="about-title" class="about-title">{t.nav.about}<span class="text-primary" aria-hidden="true">.</span></h1>
+        <p class="about-lead" data-about-copy="title">{content.title}</p>
+        <div class="about-ornament about-hero-floral text-primary" aria-hidden="true">
+          <Fragment set:html={ornament(floralSvg, 'about-hero')} />
         </div>
+      </div>
+      <figure>
+        <img
+          src={image('tancuj-1280.webp')}
+          srcset={`${image('tancuj-640.webp')} 640w, ${image('tancuj-1280.webp')} 1280w`}
+          sizes="(min-width: 1280px) 680px, (min-width: 768px) 55vw, calc(100vw - 48px)"
+          width="1280" height="853" alt={labels.festivalAlt}
+          loading="eager" fetchpriority="high" decoding="async"
+        />
+        <figcaption class="flex justify-between gap-3">
+          <span>{labels.festivalCaption}</span><span class="italic">{labels.place}</span>
+        </figcaption>
+      </figure>
+    </section>
 
+    <section class="about-shell about-roots" aria-labelledby="about-roots-title">
+      <div>
+        <div class="mb-4 h-0.5 w-9 bg-primary" aria-hidden="true"></div>
+        <h2 id="about-roots-title" class="about-heading">{labels.roots}</h2>
+      </div>
+      <p data-about-copy="0">{content.paragraphs[0]}</p>
+    </section>
+  </div>
+
+  <section class="about-shell about-section" aria-labelledby="about-sections-title">
+    <p class="about-eyebrow">{labels.activities}</p>
+    <h2 id="about-sections-title" class="about-heading mt-2 mb-6">{labels.sections}</h2>
+    <div class="about-community-grid">
+      <div class="about-community-copy">
+        <p data-about-copy="sections-intro">{sectionsIntro}</p>
+        {groups.length > 0 && (
+          <ul class="about-groups" role="list" data-about-copy="sections-groups">
+            {groups.map((group) => <li>{group}</li>)}
+          </ul>
+        )}
+      </div>
+      <div class="about-community-image">
+        <figure>
+          <img src={image('ensemble.webp')} width="609" height="420"
+            alt={labels.groupAlt} loading="lazy" decoding="async" />
+          <figcaption>{labels.groupCaption}</figcaption>
+        </figure>
+        {members && <p class="about-members" data-about-copy="members">{members}</p>}
+      </div>
     </div>
-</section>
+  </section>
+
+  <section class="about-tradition about-section" aria-labelledby="about-tradition-title">
+    <div class="about-shell about-tradition-grid">
+      <div class="about-tradition-copy">
+        <h2 id="about-tradition-title" class="about-heading mb-5">{labels.tradition}</h2>
+        <p data-about-copy="2">{content.paragraphs[2]}</p>
+        <div class="about-ornament mt-6 text-primary/60" aria-hidden="true">
+          <Fragment set:html={ornament(borderSvg, 'about-tradition')} />
+        </div>
+      </div>
+      <figure class="about-costume">
+        <img src={image('kroj-detail.webp')} width="540" height="584"
+          alt={labels.costumeAlt} loading="lazy" decoding="async" />
+        <figcaption>{labels.costumeCaption}</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="about-shell about-section" aria-labelledby="about-recognition-title">
+    <p class="about-eyebrow">{labels.stage}</p>
+    <h2 id="about-recognition-title" class="about-heading mt-2 mb-7">{labels.recognition}</h2>
+    <div class="about-recognition-grid">
+      <div>
+        <h3 class="about-subheading">{labels.direction}</h3>
+        <p data-about-copy="3">{content.paragraphs[3]}</p>
+        <h3 class="about-subheading mt-6">{labels.travel}</h3>
+        <p data-about-copy="5">{content.paragraphs[5]}</p>
+      </div>
+      <div class="about-awards">
+        <h3 class="about-subheading">{labels.awards}</h3>
+        <p data-about-copy="4">{awardParts.map((part) => awardNames.has(part) ? <strong>{part}</strong> : part)}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-festival bg-[#EAF4F9] text-dark" aria-labelledby="about-festival-title">
+    <div class="about-shell">
+      <div class="about-festival-grid">
+        <div>
+          <p class="about-eyebrow text-[#B4D6E9]">{labels.festivalLabel}</p>
+          <h2 id="about-festival-title" class="about-festival-title">
+            {labels.festivalFirst}<br /><em>{labels.festivalLast}</em>
+          </h2>
+        </div>
+        <div>
+          <div class="about-ornament mb-4 hidden w-24 text-[#B4D6E9] md:block" aria-hidden="true">
+            <Fragment set:html={ornament(floralSvg, 'about-festival')} />
+          </div>
+          <p data-about-copy="6">{content.paragraphs[6]}</p>
+        </div>
+      </div>
+      <div class="about-ornament mt-7 text-[#1B79AC]/60" aria-hidden="true">
+        <Fragment set:html={ornament(borderSvg, 'about-festival-border')} />
+      </div>
+    </div>
+  </section>
+
+  {content.paragraphs.slice(7).length > 0 && (
+    <div class="about-shell about-section space-y-6">
+      {content.paragraphs.slice(7).map((paragraph) => <p>{paragraph}</p>)}
+    </div>
+  )}
+</article>
+
+<style>
+  @reference '../styles/global.css';
+
+  .about-page { font-size: 1.0625rem; line-height: 1.7; }
+  .about-page p { text-wrap: pretty; }
+  .about-page img { display: block; width: 100%; height: auto; }
+  .about-page figcaption { margin-top: .6rem; color: #526879; font-size: .75rem; line-height: 1.45; }
+  .about-page strong { @apply font-semibold text-dark; }
+  .about-shell { @apply mx-auto w-full max-w-7xl px-6 md:px-12; }
+  .about-section { padding-block: 2.125rem; }
+  .about-heading, .about-title, .about-lead, .about-members, .about-festival-title {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 400;
+  }
+  .about-heading { @apply text-dark; font-size: 2rem; line-height: 1.2; letter-spacing: -.035em; text-wrap: balance; }
+  .about-eyebrow { @apply font-semibold text-primary; font-size: .6875rem; line-height: 1.6; letter-spacing: .13em; }
+  .about-title { @apply text-dark; margin-block: .65rem .85rem; font-size: clamp(3.5rem, 7.5vw, 7.5rem); line-height: 1.1; letter-spacing: -.045em; }
+  .about-lead { @apply text-dark; max-width: 24rem; font-size: 1.25rem; line-height: 1.5; }
+  .about-hero { display: grid; gap: 1.5rem; padding-block: 2rem 1.6rem; align-items: center; }
+  .about-intro { position: relative; padding-right: 3.5rem; }
+  .about-ornament :global(svg) { display: block; width: 100%; height: auto; }
+  .about-hero-floral { position: absolute; right: -.2rem; top: 2rem; width: 4.8rem; transform: rotate(90deg); }
+  .about-roots { display: grid; gap: 1.1rem; padding-block: 1.75rem 2rem; }
+  .about-roots::before { content: ''; height: 1px; background: #DCDDD6; }
+  .about-roots p { font-size: 1rem; }
+  .about-community-grid { display: grid; gap: 1.6rem; align-items: start; }
+  .about-groups { margin-top: 1.25rem; padding-left: 1.1rem; border-left: 2px solid #B7D0DF; color: var(--color-dark); font-size: 1rem; line-height: 1.55; }
+  .about-groups li { padding-block: .17rem; break-inside: avoid; }
+  .about-members { @apply text-dark; margin-top: 1.4rem; font-size: 1.2rem; line-height: 1.65; }
+  .about-tradition { background: #EEF5F8; }
+  .about-tradition-grid { display: grid; gap: 1.5rem; align-items: center; }
+  .about-costume { width: min(76%, 15rem); justify-self: center; }
+  .about-recognition-grid { display: grid; gap: 1.5rem; }
+  .about-subheading { @apply mb-2 font-semibold text-dark; font-size: 1.15rem; line-height: 1.4; }
+  .about-awards { padding-top: 1.5rem; border-top: 1px solid #D6E0E5; }
+  .about-festival { padding-block: 2rem 1.4rem; }
+  .about-festival-grid { display: grid; gap: 1.25rem; align-items: center; }
+  .about-festival .about-eyebrow { color: #1B79AC; }
+  .about-festival-title { margin-top: .75rem; font-size: clamp(3rem, 5.5vw, 4.75rem); line-height: 1.08; letter-spacing: -.035em; }
+
+  @media (min-width: 48rem) {
+    .about-section { padding-block: 3.125rem; }
+    .about-heading { font-size: clamp(2rem, 3.1vw, 2.8rem); }
+    .about-hero { grid-template-columns: .8fr 1.2fr; gap: 2.5rem; padding-block: 3rem 2.4rem; }
+    .about-intro { padding-right: 0; }
+    .about-lead { font-size: 1.45rem; }
+    .about-hero-floral { position: static; width: 9.7rem; margin-top: 1.5rem; transform: none; }
+    .about-roots { grid-template-columns: .62fr 1.38fr; gap: 2rem 2.5rem; padding-block: 0 2.75rem; }
+    .about-roots::before { grid-column: 1 / -1; }
+    .about-roots .about-heading { font-size: 2rem; }
+    .about-community-grid { grid-template-columns: .95fr 1.05fr; gap: 2.75rem; }
+    .about-community-copy { grid-column: 2; grid-row: 1; }
+    .about-community-image { grid-column: 1; grid-row: 1; }
+    .about-tradition-grid { grid-template-columns: .62fr 1.38fr; gap: 3rem; }
+    .about-tradition-copy { grid-column: 2; grid-row: 1; }
+    .about-costume { grid-column: 1; grid-row: 1; width: 100%; max-width: 18.75rem; }
+    .about-recognition-grid { grid-template-columns: 1fr 1.1fr; gap: 2.75rem; }
+    .about-awards { padding: 0 0 0 2rem; border-top: 0; border-left: 1px solid #D6E0E5; }
+    .about-festival-grid { grid-template-columns: .82fr 1.18fr; gap: 2.75rem; }
+    .about-festival p:not(.about-eyebrow) { font-size: 1.125rem; }
+  }
+
+  @media (min-width: 80rem) {
+    .about-groups { columns: 2; column-gap: 1.25rem; }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .about-intro { animation: about-enter 600ms ease-out both; }
+    @keyframes about-enter {
+      from { opacity: .75; translate: 0 8px; }
+      to { opacity: 1; translate: 0 0; }
+    }
+  }
+</style>

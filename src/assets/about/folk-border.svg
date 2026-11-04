@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 28" fill="none" aria-hidden="true">
+  <defs>
+    <pattern id="folk-border-repeat" width="60" height="28" patternUnits="userSpaceOnUse">
+      <path d="M0 3H60M0 25H60" stroke="currentColor" stroke-width=".7" opacity=".55"/>
+      <path d="M30 5L39 14L30 23L21 14Z" stroke="currentColor" stroke-width="1.15"/>
+      <path d="M30 10L34 14L30 18L26 14Z" fill="currentColor"/>
+      <path d="M15 11V17M12 14H18M45 11V17M42 14H48" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/>
+      <path d="M0 10L4 14L0 18M60 10L56 14L60 18" stroke="currentColor" stroke-width="1.1"/>
+      <path d="M8 5L9.5 6.5L8 8L6.5 6.5ZM52 5L53.5 6.5L52 8L50.5 6.5ZM8 20L9.5 21.5L8 23L6.5 21.5ZM52 20L53.5 21.5L52 23L50.5 21.5Z" fill="currentColor"/>
+    </pattern>
+  </defs>
+  <path d="M0 0H720V28H0Z" fill="url(#folk-border-repeat)"/>
+</svg>

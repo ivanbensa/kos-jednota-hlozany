@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 130" fill="none" aria-hidden="true">
+  <defs>
+    <path id="folk-floral-petal" d="M0-7C-5-11-7-19-3-24C-1-27 1-27 3-24C7-19 5-11 0-7Z" fill="currentColor"/>
+    <g id="folk-floral-flower">
+      <use href="#folk-floral-petal"/>
+      <use href="#folk-floral-petal" transform="rotate(45)"/>
+      <use href="#folk-floral-petal" transform="rotate(90)"/>
+      <use href="#folk-floral-petal" transform="rotate(135)"/>
+      <use href="#folk-floral-petal" transform="rotate(180)"/>
+      <use href="#folk-floral-petal" transform="rotate(225)"/>
+      <use href="#folk-floral-petal" transform="rotate(270)"/>
+      <use href="#folk-floral-petal" transform="rotate(315)"/>
+      <circle r="4.3" fill="currentColor"/>
+      <circle r="6.4" stroke="currentColor" stroke-width=".9"/>
+    </g>
+    <g id="folk-floral-left">
+      <path d="M160 116C151 98 128 98 108 98C79 98 55 95 30 82M150 105C131 98 106 91 91 68M121 99C111 83 112 69 118 57M66 93C57 83 54 72 55 64" stroke="currentColor" stroke-width="1.65" stroke-linecap="round"/>
+      <path d="M135 99C124 95 123 87 125 79C133 83 137 91 135 99ZM109 98C98 103 88 102 82 96C92 91 103 93 109 98ZM77 92C65 95 57 91 53 85C64 81 74 85 77 92ZM53 83C42 83 36 77 35 69C45 69 52 75 53 83ZM112 80C104 77 101 70 102 64C110 67 114 73 112 80ZM114 69C114 59 121 54 127 53C128 60 122 67 114 69ZM55 73C46 70 44 63 46 58C53 61 57 67 55 73Z" fill="currentColor"/>
+      <path d="M33 84C24 88 17 85 15 79C21 76 28 78 33 84ZM36 86C30 93 23 93 18 90C22 84 29 82 36 86Z" fill="currentColor"/>
+      <use href="#folk-floral-flower" transform="translate(88 64) scale(.65) rotate(12)"/>
+      <circle cx="57" cy="53" r="2.2" fill="currentColor"/>
+      <circle cx="131" cy="66" r="1.65" fill="currentColor"/>
+    </g>
+  </defs>
+  <path d="M160 116V67" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+  <use href="#folk-floral-left"/>
+  <use href="#folk-floral-left" transform="translate(320) scale(-1 1)"/>
+  <path d="M160 89C148 86 144 77 145 69C154 71 160 79 160 89ZM160 89C172 86 176 77 175 69C166 71 160 79 160 89Z" fill="currentColor"/>
+  <use href="#folk-floral-flower" transform="translate(160 40)"/>
+  <circle cx="160" cy="123" r="2.1" fill="currentColor"/>
+</svg>
