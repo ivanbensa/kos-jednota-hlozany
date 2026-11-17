@@ -1,18 +1,52 @@
 
 ---
-const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 import { Icon } from 'astro-icon/components';
 
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const lang = Astro.currentLocale === 'sr' ? 'sr' : 'sk';
 
 const facebookUrl = 'https://www.facebook.com/kosjednota.hlozany';
 const instagramUrl = 'https://www.instagram.com/kosjednota.hlozany/';
 
+const labels = {
+    sk: {
+        society: 'KOS Jednota Hložany',
+        description: 'Zachovávame slovenské tradície, folklór a kultúrne dedičstvo pre ďalšie generácie.',
+        navigation: 'Navigácia',
+        navigationAria: 'Navigácia v pätičke',
+        followUs: 'Sledujte nás',
+        rights: 'Všetky práva vyhradené.',
+        home: 'Domov',
+        about: 'O nás',
+        history: 'História',
+        gallery: 'Galéria',
+        contact: 'Kontakt',
+    },
+    sr: {
+        society: 'КПД Једнота Гложан',
+        description: 'Чувамо словачку традицију, фолклор и културно наслеђе за будуће генерације.',
+        navigation: 'Навигација',
+        navigationAria: 'Навигација у подножју странице',
+        followUs: 'Пратите нас',
+        rights: 'Сва права задржана.',
+        home: 'Почетна',
+        about: 'О нама',
+        history: 'Историја',
+        gallery: 'Галерија',
+        contact: 'Контакт',
+    },
+};
+
+const t = labels[lang];
+
+const prefix = lang === 'sr' ? `${base}sr/` : base;
+
 const links = [
-    { label: 'Domov', href: base },
-    { label: 'O nás', href: `${base}o-nas` },
-    { label: 'História', href: `${base}historia` },
-    { label: 'Galéria', href: `${base}galeria` },
-    { label: 'Kontakt', href: `${base}kontakt` },
+    { label: t.home, href: prefix },
+    { label: t.about, href: `${prefix}o-nas` },
+    { label: t.history, href: `${prefix}historia` },
+    { label: t.gallery, href: `${prefix}galeria` },
+    { label: t.contact, href: `${prefix}kontakt` },
 ];
 ---
 
@@ -24,23 +58,22 @@ const links = [
             <!-- About -->
             <div>
                 <h3 class="mb-4 text-xl font-bold">
-                    KOS Jednota Hložany
+                    {t.society}
                 </h3>
 
                 <p class="max-w-xs text-sm leading-relaxed text-white/70">
-                    Zachovávame slovenské tradície, folklór
-                    a kultúrne dedičstvo pre ďalšie generácie.
+                    {t.description}
                 </p>
             </div>
 
             <!-- Navigation -->
             <div>
                 <h3 class="mb-4 font-semibold">
-                    Navigácia
+                    {t.navigation}
                 </h3>
 
                 <nav
-                        aria-label="Navigácia v pätičke"
+                        aria-label={t.navigationAria}
                         class="flex flex-col gap-3 text-sm text-white/70"
                 >
                     {links.map((link) => (
@@ -57,7 +90,7 @@ const links = [
             <!-- Social -->
             <div>
                 <h3 class="mb-4 font-semibold">
-                    Sledujte nás
+                    {t.followUs}
                 </h3>
 
                 <div class="flex flex-col items-start gap-4">
@@ -67,12 +100,15 @@ const links = [
                             href={facebookUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            aria-label="Facebook KOS Jednota Hložany"
+                            aria-label={`Facebook ${t.society}`}
                             class="inline-flex items-center gap-3
                                text-sm text-white/70
                                transition-colors hover:text-white"
                     >
-                        <Icon name="simple-icons:facebook" class="h-7 w-7" />
+                        <Icon
+                                name="simple-icons:facebook"
+                                class="h-7 w-7"
+                        />
 
                         <span>Facebook</span>
                     </a>
@@ -82,12 +118,15 @@ const links = [
                             href={instagramUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            aria-label="Instagram KOS Jednota Hložany"
+                            aria-label={`Instagram ${t.society}`}
                             class="inline-flex items-center gap-3
                                text-sm text-white/70
                                transition-colors hover:text-white"
                     >
-                        <Icon name="simple-icons:instagram" class="h-7 w-7" />
+                        <Icon
+                                name="simple-icons:instagram"
+                                class="h-7 w-7"
+                        />
 
                         <span>Instagram</span>
                     </a>
@@ -102,8 +141,8 @@ const links = [
                 class="mt-12 border-t border-white/15
                    pt-6 text-center text-sm text-white/60"
         >
-            © {new Date().getFullYear()} KOS Jednota Hložany.
-            Všetky práva vyhradené.
+            © {new Date().getFullYear()} {t.society}.
+            {t.rights}
         </div>
 
     </div>

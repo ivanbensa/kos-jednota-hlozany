@@ -3,35 +3,68 @@
 import 'photoswipe/style.css';
 
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const lang = Astro.currentLocale === 'sr' ? 'sr' : 'sk';
+
+const labels = {
+    sk: {
+        eyebrow: 'Naše spomienky',
+        title: 'Galéria',
+        description: 'Zachytené okamihy z našich vystúpení, skúšok a spoločných zážitkov.',
+        openPhoto: 'Otvoriť fotografiu',
+    },
+    sr: {
+        eyebrow: 'Наше успомене',
+        title: 'Галерија',
+        description: 'Забележени тренуци са наших наступа, проба и заједничких доживљаја.',
+        openPhoto: 'Отвори фотографију',
+    },
+};
+
+const t = labels[lang];
 
 const photos = [
     {
         src: `${base}images/Golden-Hour-Folk-Dance-Festival.png`,
-        alt: 'Folklórne vystúpenie',
+        alt: {
+            sk: 'Folklórne vystúpenie',
+            sr: 'Фолклорни наступ',
+        },
         width: 1920,
         height: 1080,
     },
     {
         src: `${base}images/about.png`,
-        alt: 'Naše tradície',
+        alt: {
+            sk: 'Naše tradície',
+            sr: 'Наше традиције',
+        },
         width: 1536,
         height: 1024,
     },
     {
         src: `${base}images/folklore-children.jpg`,
-        alt: 'Detská folklórna skupina',
+        alt: {
+            sk: 'Detská folklórna skupina',
+            sr: 'Дечја фолклорна група',
+        },
         width: 640,
         height: 1024,
     },
     {
         src: `${base}images/folklore-youth.jpg`,
-        alt: 'Mládežnícka folklórna skupina',
+        alt: {
+            sk: 'Mládežnícka folklórna skupina',
+            sr: 'Омладинска фолклорна група',
+        },
         width: 640,
         height: 1024,
     },
     {
         src: `${base}images/folklore-adults.jpg`,
-        alt: 'Folklórna skupina dospelých',
+        alt: {
+            sk: 'Folklórna skupina dospelých',
+            sr: 'Фолклорна група одраслих',
+        },
         width: 640,
         height: 1024,
     },
@@ -43,25 +76,26 @@ const photos = [
 
         <!-- Naslov galerije -->
         <div class="mx-auto mb-10 max-w-3xl text-center sm:mb-12 lg:mb-14">
+
             <p
                     class="mb-3 text-xs font-bold uppercase tracking-[0.2em]
                        text-primary sm:mb-4 sm:text-sm sm:tracking-[0.25em]"
             >
-                Naše spomienky
+                {t.eyebrow}
             </p>
 
             <h1
                     class="mb-5 text-3xl font-bold tracking-tight text-dark
                        sm:text-4xl lg:text-5xl"
             >
-                Galéria
+                {t.title}
             </h1>
 
             <p
                     class="mx-auto max-w-2xl text-base leading-7 text-slate-600
                        sm:text-lg sm:leading-8"
             >
-                Zachytené okamihy z našich vystúpení, skúšok a spoločných zážitkov.
+                {t.description}
             </p>
         </div>
 
@@ -80,7 +114,7 @@ const photos = [
                             data-pswp-height={photo.height}
                             target="_blank"
                             rel="noopener"
-                            aria-label={`Otvoriť fotografiu: ${photo.alt}`}
+                            aria-label={`${t.openPhoto}: ${photo.alt[lang]}`}
                             class:list={[
                                 'group relative block overflow-hidden rounded-xl bg-sky-100 shadow-sm transition-shadow duration-300 hover:shadow-lg sm:rounded-2xl',
                                 index === 0 ? 'col-span-2 row-span-2' : '',
@@ -88,7 +122,7 @@ const photos = [
                     >
                         <img
                                 src={photo.src}
-                                alt={photo.alt}
+                                alt={photo.alt[lang]}
                                 loading="lazy"
                                 class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                         />

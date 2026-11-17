@@ -1,14 +1,52 @@
 
-
 ---
-import { events } from '../data/events';
+import { events, eventsSr } from '../data/events';
 
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const lang = Astro.currentLocale === 'sr' ? 'sr' : 'sk';
 
-const upcomingEvents = events
+const labels = {
+    sk: {
+        eyebrow: 'Stretnime sa',
+        heading: 'Vystúpenia a podujatia',
+        description: 'Pozrite sa, kde nás môžete najbližšie vidieť.',
+        moreInfo: 'Viac informácií',
+        allEvents: 'Všetky podujatia',
+        noEvents: 'Momentálne nemáme naplánované žiadne podujatia.',
+    },
+    sr: {
+        eyebrow: 'Видимо се',
+        heading: 'Наступи и дешавања',
+        description: 'Погледајте где нас ускоро можете видети.',
+        moreInfo: 'Више информација',
+        allEvents: 'Сва дешавања',
+        noEvents: 'Тренутно немамо заказаних дешавања.',
+    },
+};
+
+const t = labels[lang];
+
+const localizedEvents = lang === 'sr' ? eventsSr : events;
+
+const upcomingEvents = localizedEvents
     .filter((event) => new Date(`${event.date}T23:59:59`) >= new Date())
     .sort((a, b) => a.date.localeCompare(b.date))
     .slice(0, 3);
+
+const eventsUrl = lang === 'sr'
+    ? `${base}sr/podujatia`
+    : `${base}podujatia`;
+
+const eventUrl = (slug: string) =>
+    lang === 'sr'
+        ? `${base}sr/podujatia/${slug}`
+        : `${base}podujatia/${slug}`;
+
+const formatMonth = (date: Date) =>
+    new Intl.DateTimeFormat(lang === 'sr' ? 'sr-RS' : 'sk-SK', {
+        month: 'short',
+        timeZone: 'UTC',
+    }).format(date);
 ---
 
 <section
@@ -24,21 +62,21 @@ const upcomingEvents = events
                     class="mb-3 text-xs font-bold uppercase tracking-[0.2em]
                        text-primary sm:mb-4 sm:text-sm sm:tracking-[0.25em]"
             >
-                Stretnime sa
+                {t.eyebrow}
             </p>
 
             <h2
                     class="mb-4 text-3xl font-bold tracking-tight text-dark
                        sm:text-4xl lg:mb-5 lg:text-5xl"
             >
-                Vystúpenia a podujatia
+                {t.heading}
             </h2>
 
             <p
                     class="mx-auto max-w-2xl text-base leading-7 text-slate-700
                        sm:text-lg"
             >
-                Pozrite sa, kde nás môžete najbližšie vidieť.
+                {t.description}
             </p>
         </div>
 
@@ -53,9 +91,9 @@ const upcomingEvents = events
                     return (
                             <article
                                     class="group overflow-hidden rounded-2xl
-           border border-sky-200 bg-[#EDF7FC]
-           shadow-sm transition-all duration-300
-           hover:-translate-y-1 hover:shadow-lg"
+                                   border border-sky-200 bg-[#EDF7FC]
+                                   shadow-sm transition-all duration-300
+                                   hover:-translate-y-1 hover:shadow-lg"
                             >
                                 <div
                                         class="flex flex-col gap-5 p-5
@@ -82,10 +120,7 @@ const upcomingEvents = events
                                                 class="mt-1 text-xs font-semibold uppercase
                                                sm:text-sm"
                                         >
-                                        {new Intl.DateTimeFormat('sk-SK', {
-                                            month: 'short',
-                                            timeZone: 'UTC',
-                                        }).format(date)}
+                                        {formatMonth(date)}
                                     </span>
                                     </div>
 
@@ -143,7 +178,7 @@ const upcomingEvents = events
 
                                     <!-- Dugme -->
                                     <a
-                                            href={`${base}podujatia/${event.slug}`}
+                                            href={eventUrl(event.slug)}
                                             class="inline-flex w-full shrink-0 items-center
                                            justify-center gap-2 rounded-lg
                                            border-2 border-primary px-5 py-3
@@ -154,7 +189,7 @@ const upcomingEvents = events
                                            md:px-4
                                            lg:px-5"
                                     >
-                                        Viac informácií
+                                        {t.moreInfo}
                                         <span aria-hidden="true">→</span>
                                     </a>
 
@@ -168,7 +203,7 @@ const upcomingEvents = events
                            px-5 py-10 text-center text-slate-600
                            shadow-sm sm:p-12"
                     >
-                        Momentálne nemáme naplánované žiadne podujatia.
+                        {t.noEvents}
                     </p>
             )}
 
@@ -177,16 +212,17 @@ const upcomingEvents = events
         <!-- Svi događaji -->
         <div class="mt-10 text-center sm:mt-12">
             <a
-                    href={`${base}podujatia`}
+                    href={eventsUrl}
                     class="inline-flex items-center gap-2 text-sm
                        font-semibold text-primary transition-colors
                        hover:text-dark sm:text-base"
             >
-                Všetky podujatia
+                {t.allEvents}
                 <span aria-hidden="true">→</span>
             </a>
         </div>
 
     </div>
 </section>
+
 
