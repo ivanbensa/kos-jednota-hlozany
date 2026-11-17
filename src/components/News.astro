@@ -1,21 +1,54 @@
 
+
 ---
-import { news } from '../data/news.ts';
+import { news, newsSr } from '../data/news.ts';
 
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const lang = Astro.currentLocale === 'sr' ? 'sr' : 'sk';
 
-const latestNews = [...news]
+const labels = {
+    sk: {
+        eyebrow: 'Život nášho spolku',
+        heading: 'Najnovšie správy',
+        allNews: 'Všetky novinky',
+        readMore: 'Čítať viac',
+        readArticle: 'Čítať',
+    },
+    sr: {
+        eyebrow: 'Живот нашег друштва',
+        heading: 'Најновије вести',
+        allNews: 'Све вести',
+        readMore: 'Прочитај више',
+        readArticle: 'Прочитај',
+    },
+};
+
+const t = labels[lang];
+
+const localizedNews = lang === 'sr' ? newsSr : news;
+
+const latestNews = [...localizedNews]
     .sort((a, b) => b.date.localeCompare(a.date))
     .slice(0, 3);
 
 const formatDate = (date: string) =>
-    new Intl.DateTimeFormat('sk-SK', {
+    new Intl.DateTimeFormat(lang === 'sr' ? 'sr-RS' : 'sk-SK', {
         day: 'numeric',
         month: 'long',
         year: 'numeric',
         timeZone: 'UTC',
     }).format(new Date(`${date}T12:00:00Z`));
+
+const newsUrl = lang === 'sr'
+    ? `${base}sr/novinky`
+    : `${base}novinky`;
+
+const articleUrl = (slug: string) =>
+    lang === 'sr'
+        ? `${base}sr/novinky/${slug}`
+        : `${base}novinky/${slug}`;
 ---
+
 
 <section
         id="novinky"
@@ -35,25 +68,25 @@ const formatDate = (date: string) =>
                            tracking-[0.2em] text-primary
                            sm:mb-4 sm:text-sm sm:tracking-[0.25em]"
                 >
-                    Život nášho spolku
+                    {t.eyebrow}
                 </p>
 
                 <h2
                         class="text-3xl font-bold tracking-tight text-dark
                            sm:text-4xl lg:text-5xl"
                 >
-                    Najnovšie správy
+                    {t.heading}
                 </h2>
             </div>
 
             <a
-                    href={`${base}novinky`}
+                    href={newsUrl}
                     class="inline-flex w-fit items-center gap-2
                        text-sm font-semibold text-primary
                        transition-colors hover:text-dark
                        sm:text-base"
             >
-                Všetky novinky
+                {t.allNews}
                 <span aria-hidden="true">→</span>
             </a>
         </div>
@@ -72,12 +105,11 @@ const formatDate = (date: string) =>
                            hover:-translate-y-1 hover:shadow-xl
                            md:hover:-translate-y-2"
                     >
-                        <!-- Image -->
                         <a
-                                href={`${base}novinky/${item.slug}`}
+                                href={articleUrl(item.slug)}
                                 class="block h-52 overflow-hidden bg-sky-100
                                sm:h-64 md:h-56 lg:h-60"
-                                aria-label={`Čítať: ${item.title}`}
+                                aria-label={`${t.readArticle}: ${item.title}`}
                         >
                             <img
                                     src={`${base}${item.image.replace(/^\/+/, '')}`}
@@ -89,7 +121,6 @@ const formatDate = (date: string) =>
                             />
                         </a>
 
-                        <!-- Card content -->
                         <div
                                 class="flex flex-1 flex-col p-5
                                sm:p-6 lg:p-7"
@@ -108,7 +139,7 @@ const formatDate = (date: string) =>
                                    sm:text-2xl"
                             >
                                 <a
-                                        href={`${base}novinky/${item.slug}`}
+                                        href={articleUrl(item.slug)}
                                         class="transition-colors hover:text-primary"
                                 >
                                     {item.title}
@@ -123,13 +154,13 @@ const formatDate = (date: string) =>
                             </p>
 
                             <a
-                                    href={`${base}novinky/${item.slug}`}
+                                    href={articleUrl(item.slug)}
                                     class="mt-auto inline-flex w-fit items-center
                                    gap-2 text-sm font-bold text-primary
                                    transition-all hover:gap-3
                                    hover:text-dark sm:text-base"
                             >
-                                Čítať viac
+                                {t.readMore}
                                 <span aria-hidden="true">→</span>
                             </a>
                         </div>
@@ -139,4 +170,5 @@ const formatDate = (date: string) =>
 
     </div>
 </section>
+
 

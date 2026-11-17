@@ -1,6 +1,27 @@
 
 ---
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const lang = Astro.currentLocale === 'sr' ? 'sr' : 'sk';
+
+const content = {
+    sk: {
+        eyebrow: 'Slovenská kultúra a tradície',
+        title: 'KOS Jednota Hložany',
+        subtitle: 'Zachovávame tradície pre ďalšie generácie.',
+        button: 'Spoznajte nás',
+        imageAlt: 'Folklórny súbor KOS Jednota Hložany',
+    },
+    sr: {
+        eyebrow: 'Словачка култура и традиција',
+        title: 'КПД Једнота Гложан',
+        subtitle: 'Чувамо традицију за будуће генерације.',
+        button: 'Упознајте нас',
+        imageAlt: 'Фолклорни ансамбл КПД Једнота Гложан',
+    },
+};
+
+const t = content[lang];
+const aboutUrl = lang === 'sr' ? `${base}sr/o-nas` : `${base}o-nas`;
 ---
 
 <section
@@ -9,11 +30,11 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
     <!-- Pozadinska fotografija -->
     <img
             src={`${base}images/Golden-Hour-Folk-Dance-Festival.png`}
-            alt="Folklórny súbor KOS Jednota Hložany"
+            alt={t.imageAlt}
             class="absolute inset-0 h-full w-full object-cover object-center"
     />
 
-    <!-- Tamni overlay za čitljivost teksta -->
+    <!-- Tamni overlay -->
     <div class="absolute inset-0 bg-black/55"></div>
 
     <!-- Hero sadržaj -->
@@ -22,27 +43,28 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
         <p
                 class="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-sky-300 sm:mb-5 sm:text-sm sm:tracking-[0.3em]"
         >
-            Slovenská kultúra a tradície
+            {t.eyebrow}
         </p>
 
         <h1
                 class="mb-5 text-4xl leading-tight font-bold sm:text-5xl md:text-6xl lg:mb-6 lg:text-7xl"
         >
-            KOS Jednota Hložany
+            {t.title}
         </h1>
 
         <p
                 class="mx-auto mb-8 max-w-2xl text-base leading-relaxed text-gray-200 sm:text-lg md:text-xl lg:mb-9 lg:text-2xl"
         >
-            Zachovávame tradície pre ďalšie generácie.
+            {t.subtitle}
         </p>
 
         <a
-                href={`${base}o-nas`}
+                href={aboutUrl}
                 class="inline-block rounded-md bg-primary px-7 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:scale-105 hover:bg-[#15618A] sm:px-8 sm:py-4 sm:text-base"
         >
-            Spoznajte nás
+            {t.button}
         </a>
 
     </div>
 </section>
+
