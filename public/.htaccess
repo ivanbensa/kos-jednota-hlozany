@@ -1,0 +1,4 @@
+RewriteEngine On
+
+RewriteCond %{HTTP_HOST} ^kosjednota\.com$ [NC]
+RewriteRule ^(.*)$ https://www.kosjednota.com/$1 [R=301,L]
